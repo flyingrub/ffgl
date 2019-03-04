@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mixers", "mixers", "{98BAD375-4E77-4EDA-86CA-E77F213DCDA6}"
 EndProject
@@ -16,28 +16,46 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gradient", "Gradient.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Particles", "Particles.vcxproj", "{96F220F8-DF7E-49AB-9E51-394676061B00}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Waveform", "Waveform.vcxproj", "{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8EE99351-6226-415E-B2E9-2DCB2985F371}.Debug|x64.ActiveCfg = Debug|x64
 		{8EE99351-6226-415E-B2E9-2DCB2985F371}.Debug|x64.Build.0 = Debug|x64
+		{8EE99351-6226-415E-B2E9-2DCB2985F371}.Debug|x86.ActiveCfg = Debug|x64
 		{8EE99351-6226-415E-B2E9-2DCB2985F371}.Release|x64.ActiveCfg = Release|x64
 		{8EE99351-6226-415E-B2E9-2DCB2985F371}.Release|x64.Build.0 = Release|x64
+		{8EE99351-6226-415E-B2E9-2DCB2985F371}.Release|x86.ActiveCfg = Release|x64
 		{24912FC3-BC01-49E9-BA34-54549F0D8F23}.Debug|x64.ActiveCfg = Debug|x64
 		{24912FC3-BC01-49E9-BA34-54549F0D8F23}.Debug|x64.Build.0 = Debug|x64
+		{24912FC3-BC01-49E9-BA34-54549F0D8F23}.Debug|x86.ActiveCfg = Debug|x64
 		{24912FC3-BC01-49E9-BA34-54549F0D8F23}.Release|x64.ActiveCfg = Release|x64
 		{24912FC3-BC01-49E9-BA34-54549F0D8F23}.Release|x64.Build.0 = Release|x64
+		{24912FC3-BC01-49E9-BA34-54549F0D8F23}.Release|x86.ActiveCfg = Release|x64
 		{6858F0CB-DE74-406F-B56A-CC5514CAA952}.Debug|x64.ActiveCfg = Debug|x64
 		{6858F0CB-DE74-406F-B56A-CC5514CAA952}.Debug|x64.Build.0 = Debug|x64
+		{6858F0CB-DE74-406F-B56A-CC5514CAA952}.Debug|x86.ActiveCfg = Debug|x64
 		{6858F0CB-DE74-406F-B56A-CC5514CAA952}.Release|x64.ActiveCfg = Release|x64
 		{6858F0CB-DE74-406F-B56A-CC5514CAA952}.Release|x64.Build.0 = Release|x64
+		{6858F0CB-DE74-406F-B56A-CC5514CAA952}.Release|x86.ActiveCfg = Release|x64
 		{96F220F8-DF7E-49AB-9E51-394676061B00}.Debug|x64.ActiveCfg = Debug|x64
 		{96F220F8-DF7E-49AB-9E51-394676061B00}.Debug|x64.Build.0 = Debug|x64
+		{96F220F8-DF7E-49AB-9E51-394676061B00}.Debug|x86.ActiveCfg = Debug|x64
 		{96F220F8-DF7E-49AB-9E51-394676061B00}.Release|x64.ActiveCfg = Release|x64
 		{96F220F8-DF7E-49AB-9E51-394676061B00}.Release|x64.Build.0 = Release|x64
+		{96F220F8-DF7E-49AB-9E51-394676061B00}.Release|x86.ActiveCfg = Release|x64
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}.Debug|x64.ActiveCfg = Debug|x64
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}.Debug|x64.Build.0 = Debug|x64
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}.Debug|x86.ActiveCfg = Debug|x64
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}.Release|x64.ActiveCfg = Release|x64
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}.Release|x64.Build.0 = Release|x64
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +65,7 @@ Global
 		{24912FC3-BC01-49E9-BA34-54549F0D8F23} = {98BAD375-4E77-4EDA-86CA-E77F213DCDA6}
 		{6858F0CB-DE74-406F-B56A-CC5514CAA952} = {26AC2413-23B7-4D1F-BB58-17D67106F3F1}
 		{96F220F8-DF7E-49AB-9E51-394676061B00} = {26AC2413-23B7-4D1F-BB58-17D67106F3F1}
+		{FB7F9DC3-5E9C-4299-A07F-5E1846172C91} = {26AC2413-23B7-4D1F-BB58-17D67106F3F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28436461-C06F-497A-8594-636977E4CDAF}

@@ -91,9 +91,10 @@ public:
 	}
 
 	ParamRange( std::string name, float value, Range range ) :
-		Param( name, FF_TYPE_STANDARD, value ),
+		Param( name, FF_TYPE_STANDARD),
 		range( range )
 	{
+		setValue( utils::map( value, range.min, range.max, 0.0, 1.0 ) ); 
 	}
 
 	float getRealValue()

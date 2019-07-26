@@ -91,17 +91,7 @@ static CFreeFrameGLPlugin* s_pPrototype = NULL;
 
 bool InitGLExts()
 {
-#if defined( WIN32 )
-	static bool triedInit  = false;
-	static bool initResult = false;
-	if( triedInit )
-		return initResult;
-	triedInit = true;
-	initResult = true;
-	return initResult;
-#else
 	return true;
-#endif
 }
 
 void* getInfo()

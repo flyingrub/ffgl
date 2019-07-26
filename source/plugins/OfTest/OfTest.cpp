@@ -1,7 +1,7 @@
 #include "OfTest.h"
 
 static PluginInstance p = Source::createPlugin< OfTest >( {
-	"FL20",// plugin unique ID
+	"FL20", // plugin unique ID
 	"OfTest" // Plugin name
 } );
 
@@ -26,12 +26,12 @@ FFResult OfTest::ProcessOpenGL( ProcessOpenGLStruct* inputTextures )
 	ofFill();
 	ofDrawRectangle( ofGetWidth(), ofGetHeight(), 100, 100 );
 	ffglex::resetOpenGLState();
-	return FFResult();
+	return FF_SUCCESS;
 }
 
 FFResult OfTest::DeInitGL()
 {
-	return FFResult();
+	return FF_SUCCESS;
 }
 
 OfTest::~OfTest()

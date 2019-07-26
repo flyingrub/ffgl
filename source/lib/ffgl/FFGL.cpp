@@ -75,7 +75,6 @@
 
 #include "FFGLPluginSDK.h"
 #include <memory.h>
-#include "../glsdk_0_5_2/glload/include/gl_load.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Static and extern variables used in the FreeFrame SDK
@@ -98,9 +97,6 @@ bool InitGLExts()
 	if( triedInit )
 		return initResult;
 	triedInit = true;
-
-	if( ogl_LoadFunctions() == ogl_LOAD_FAILED )
-		return false;
 	initResult = true;
 	return initResult;
 #else

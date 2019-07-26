@@ -16,5 +16,3 @@
 #include "ffglquickstart/Mixer.cpp"
 #include "ffglquickstart/Plugin.cpp"
 #include "ffglquickstart/Source.cpp"
-
-#include "glsdk_0_5_2/glload/source/gl_load.c"

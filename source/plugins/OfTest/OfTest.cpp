@@ -22,7 +22,7 @@ FFResult OfTest::ProcessOpenGL( ProcessOpenGLStruct* inputTextures )
 	ofBackground( 1, 0, 0 );
 	ofEnableSmoothing();
 	ofEnableAlphaBlending();
-	ofSetColor( { 0, 1, 1} );
+	ofSetColor( { 0, 1, 1 } );
 	ofFill();
 	ofDrawRectangle( ofGetWidth(), ofGetHeight(), 100, 100 );
 	ffglex::resetOpenGLState();

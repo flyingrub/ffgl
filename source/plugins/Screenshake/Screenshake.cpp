@@ -7,13 +7,22 @@ static PluginInstance p = Effect::createPlugin< Screenshake >( {
 
 static const std::string fshader = R"(
 uniform float relativeTime;
-uniform vec2 amount;
+
+vec2 rotate2D(vec2 _uv, float _angle){
+    _uv =  mat2(cos(_angle),-sin(_angle),
+                sin(_angle),cos(_angle)) * _uv;
+    return _uv;
+}
+
 void main()
 {
+	vec2 amount = vec2(amountX, amountY);
+	vec2 uv = i_uv*2.-1.;
    	vec3 p3 = vec3(0,0, relativeTime)*8.0+8.0;
-    vec2 noise = vec2(simplex3d(p3),simplex3d(p3+10.));
-	if (random) noise = vec2(random3(p3).x,random3(p3+1000.).x)*2.-1.;
-	fragColor = vec4( texture( inputTexture, i_uv+noise*amount*0.1  ).rgb, 1.0);
+    vec3 noise = vec3(simplex3d(p3),simplex3d(p3+10.),simplex3d(p3+20.));
+    uv = rotate2D(uv, noise.z*rotationAmount*.1);
+	uv = (uv+1.)/2.;
+	fragColor = texture( inputTexture, uv+noise.xy*amount*0.1 );
 }
 )";
 
@@ -23,6 +32,7 @@ Screenshake::Screenshake()
 	setFragmentShader( fshader );
 	addParam( amountX = ParamRange::create( "amountX", 0.1f, { 0.0, 1.0 } ) );
 	addParam( amountY = ParamRange::create( "amountY", 0.1f, { 0.0, 1.0 } ) );
+	addParam( ParamRange::create( "rotationAmount", 0.1f, { 0.0, 1. } ) );
 	addParam( ParamRange::create( "speed", 0.3f, { 0.0, 3. } ) );
 	addParam( ParamBool::create( "random" ) );
 }
@@ -37,5 +47,4 @@ void Screenshake::update()
 	float speed     = speedParam->getRealValue();
 	relativeTime += deltaTime * speed;
 	shader.Set( "relativeTime", relativeTime );
-	shader.Set( "amount", amountX->getRealValue(), amountY->getRealValue());
 }

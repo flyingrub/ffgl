@@ -1,11 +1,13 @@
 #pragma once
 #include <FFGLSDK.h>
+using namespace ffglqs;
+
 class StroboBeat : public Effect
 {
 public:
 	StroboBeat();
-	void update() override;
+	void Update() override;
 	~StroboBeat();
-	Param::Ptr dutyCycle;
-	ParamRange::Ptr speed;
+	std::shared_ptr < Param > dutyCycle;
+	std::shared_ptr < ParamRange > speed;
 };

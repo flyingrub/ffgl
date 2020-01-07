@@ -1,13 +1,14 @@
 #pragma once
 #include <FFGLSDK.h>
+using namespace ffglqs;
 class Screenshake : public Effect
 {
 public:
 	Screenshake();
 	~Screenshake();
-	void update() override;
+	void Update() override;
 
 private:
 	float relativeTime = 0;
-	ParamRange::Ptr amountX, amountY;
+	std::shared_ptr<ParamRange> amountX, amountY;
 };

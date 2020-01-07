@@ -1,6 +1,6 @@
 #include "Wobble.h"
 
-static PluginInstance p = Effect::createPlugin< Wobble >( {
+static PluginInstance p = Effect::CreatePlugin< Wobble >( {
 	"FL15",            // plugin unique ID
 	"Wobble"// Plugin name
 } );
@@ -25,11 +25,11 @@ void main()
 
 Wobble::Wobble()
 {
-	setFragmentShader( fshader );
-	addParam( speed = ParamRange::create( "speed", .5f, { 0.1, 5. } ) );
-	addParam( size = ParamRange::create( "size", 1.f, { .7, 5. } ) );
-	addParam( speed = ParamRange::create( "strength", 0.05f, { 0.001, .1 } ) );
-	addParam( mode = ParamOption::create( "mode", {
+	SetFragmentShader( fshader );
+	AddParam( speed = ParamRange::Create( "speed", .5f, { 0.1, 5. } ) );
+	AddParam( ParamRange::Create( "size", 1.f, { .7, 5. } ) );
+	AddParam( ParamRange::Create( "strength", 0.05f, { 0.001, .1 } ) );
+	AddParam( ParamOption::Create( "mode", {
 		{ "1" }, { "2" }, { "3" }, { "4" }, { "5" }
 	}));
 }
@@ -38,10 +38,10 @@ Wobble::~Wobble()
 {
 }
 
-void Wobble::update()
+void Wobble::Update()
 {
-	auto speedParam = std::dynamic_pointer_cast< ParamRange >( getParam( "speed" ) );
-	float speed     = speedParam->getRealValue();
+	auto speedParam = std::dynamic_pointer_cast< ParamRange >( GetParam( "speed" ) );
+	float speed     = speedParam->GetValue();
 	relativeTime += deltaTime * speed;
 	shader.Set( "relativeTime", relativeTime );
 }

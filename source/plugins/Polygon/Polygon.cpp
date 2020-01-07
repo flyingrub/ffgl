@@ -1,6 +1,6 @@
 #include "Polygon.h"
 
-static PluginInstance p = Source::createPlugin< PolygonRepeat >( {
+static PluginInstance p = Source::CreatePlugin< PolygonRepeat >( {
 	"FL05",  // plugin unique ID
 	"Polygon"// Plugin name
 } );
@@ -47,22 +47,22 @@ void main()
 
 PolygonRepeat::PolygonRepeat()
 {
-	setFragmentShader( fshader );
-	addParam( ParamRange::create( "repeat", 0.2f, { 0.0f, 1.0f } ) );
-	addParam( ParamRange::create( "speed", 0.1f, { -.5f, .5f } ) );
-	addParam( ParamRange::createInteger( "sides", 3, { 0, 200 } ) );
-	addParam( ParamRange::create( "width", 0.5f, { 0.0f, 2.0f } ) );
-	addParam( ParamRange::create( "rotation_speed", 0.f, { -2.0f, 2.0f } ) );
+	SetFragmentShader( fshader );
+	AddParam( ParamRange::Create( "repeat", 0.2f, { 0.0f, 1.0f } ) );
+	AddParam( ParamRange::Create( "speed", 0.1f, { -.5f, .5f } ) );
+	AddParam( ParamRange::CreateInteger( "sides", 3, { 0, 200 } ) );
+	AddParam( ParamRange::Create( "width", 0.5f, { 0.0f, 2.0f } ) );
+	AddParam( ParamRange::Create( "rotation_speed", 0.f, { -2.0f, 2.0f } ) );
 }
 
-void PolygonRepeat::update()
+void PolygonRepeat::Update()
 {
-	auto speedParam = std::dynamic_pointer_cast< ParamRange >( getParam( "speed" ) );
-	float speed     = speedParam->getRealValue();
+	auto speedParam = std::dynamic_pointer_cast< ParamRange >( GetParam( "speed" ) );
+	float speed     = speedParam->GetValue();
 	relativeTime += deltaTime * speed;
 	shader.Set( "relativeTime", relativeTime );
-	auto speedRotationParam = std::dynamic_pointer_cast< ParamRange >( getParam( "rotation_speed" ) );
-	float speedRotation     = speedRotationParam->getRealValue();
+	auto speedRotationParam = std::dynamic_pointer_cast< ParamRange >( GetParam( "rotation_speed" ) );
+	float speedRotation     = speedRotationParam->GetValue();
 	relativeRotationTime += deltaTime * speedRotation;
 	shader.Set( "relativeRotationTime", relativeRotationTime );
 }

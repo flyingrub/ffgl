@@ -1,6 +1,6 @@
 #include "Alea.h"
 
-static PluginInstance p = Source::createPlugin< Alea >( {
+static PluginInstance p = Source::CreatePlugin< Alea >( {
 	"FL01",// plugin unique ID
 	"ALEA" // Plugin name
 } );
@@ -9,6 +9,7 @@ static const std::string fshader = R"(
 #define PI 3.14159265359
 #define TWO_PI 6.28318530718
 uniform float sides;
+uniform float audioVolume;
 
 vec2 rotate2D(vec2 _uv, float _angle){
     _uv =  mat2(cos(_angle),-sin(_angle),
@@ -46,46 +47,49 @@ void main()
 
 Alea::Alea()
 {
-	setFragmentShader( fshader );
-	addHueColorParam( "color" );
-	addParam( Param::create( "iSize", .6f ) );
-	addParam( Param::create( "iShiftAmount", 0.5f ) );
-	addParam( smoothness = Param::create( "smoothness", 0.9f ) );
-	addParam( change = ParamTrigger::create( "change" ) );
-	addParam( fixedSize = ParamBool::create( "fixedSize" ) );
-	addParam( select = ParamOption::create( "select", { {"Global"}, {"Bass"}, {"Med"}, {"High"} } ) );
-	addParam( test = ParamText::create( "test" ) );
-	addParam( gainParam = ParamRange::create( "gainParam", 0.5, { -42, 42 } ) );
-	addParam( ParamRange::createInteger( "testInteger", 15, {-1000,1000}) );
-	addParam( fft = ParamFFT::create( "FFT" ) );
+	SetFragmentShader( fshader );
+	AddHueColorParam( "color" );
+	AddParam( Param::Create( "iSize", .6f ) );
+	AddParam( Param::Create( "iShiftAmount", 0.5f ) );
+	AddParam( smoothness = Param::Create( "smoothness", 0.9f ) );
+	AddParam( change = ParamTrigger::Create( "change" ) );
+	AddParam( fixedSize = ParamBool::Create( "fixedSize" ) );
+	AddParam( select = ParamOption::Create( "select", { { "Global" }, { "Bass" }, { "Med" }, { "High" } } ) );
+	AddParam( ParamText::Create( "test" ) );
+	AddParam( gainParam = ParamRange::Create( "gainParam", 0.5, { -42, 42 } ) );
+	AddParam( ParamRange::CreateInteger( "testInteger", 15, { -1000, 1000 } ) );
+	AddParam( fft = ParamFFT::Create( "FFT" ) );
 }
 
-void Alea::update()
+void Alea::Update()
 {
-	audioParams[ fft ].setSmoothness( smoothness->getValue() );
-	audioParams[ fft ].setGain( gainParam->getRealValue() );
+	audioParams[ fft ].SetSmoothness( smoothness->GetValue() );
+	audioParams[ fft ].SetGain( gainParam->GetValue() );
 
-	if( change->getValue() )
+	if( change->GetValue() )
 	{
-		sides = random.getRandomInt( 4, 10 );
+		sides = random.GetRandomInt( 4, 10 );
 	}
 
-	if( fixedSize->getValue() )
+	if( fixedSize->GetValue() == 1)
 	{
 		shader.Set( "audioVolume", 1.0f );
 	}
-
-	if( select->getValue() == 1 )
+	else if( select->GetValue() == 1 )
 	{
-		shader.Set( "audioVolume", audioParams[ fft ].getBass() );
+		shader.Set( "audioVolume", audioParams[ fft ].GetBass() );
 	}
-	else if( select->getValue() == 2 )
+	else if( select->GetValue() == 2 )
 	{
-		shader.Set( "audioVolume", audioParams[ fft ].getMed() );
+		shader.Set( "audioVolume", audioParams[ fft ].GetMed() );
 	}
-	else if( select->getValue() == 3 )
+	else if( select->GetValue() == 3 )
 	{
-		shader.Set( "audioVolume", audioParams[ fft ].getHigh() );
+		shader.Set( "audioVolume", audioParams[ fft ].GetHigh() );
+	}
+	else if( select->GetValue() == 3 )
+	{
+		shader.Set( "audioVolume", audioParams[ fft ].GetVolume() );
 	}
 
 	shader.Set( "sides", (float)sides );

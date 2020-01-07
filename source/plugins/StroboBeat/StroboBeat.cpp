@@ -1,6 +1,6 @@
 #include "StroboBeat.h"
 
-static PluginInstance p = Effect::createPlugin< StroboBeat >( {
+static PluginInstance p = Effect::CreatePlugin< StroboBeat >( {
 	"FL12",     // plugin unique ID
 	"StroboBeat"// Plugin name
 } );
@@ -11,24 +11,24 @@ void main()
 	vec4 tex = texture(inputTexture, i_uv);
 	bool shouldBeOn = fract(phase * speed) < dutyCycle;
 	shouldBeOn = reversephase ? !shouldBeOn : shouldBeOn;
-	tex = mix(tex,vec4(0,0,0,1),blackframe);
-	fragColor=mix(tex,color,shouldBeOn);
+	tex = mix(tex,vec4(0,0,0,1),vec4(blackframe));
+	fragColor=mix(tex,color,vec4(shouldBeOn));
 }
 )";
 
 StroboBeat::StroboBeat()
 {
-	addHueColorParam( "color" );
-	addParam( dutyCycle = Param::create( "dutyCycle", .5f ) );
-	addParam( speed = ParamRange::create( "speed", .5, { 1, 64 } ) );
-	addParam( ParamBool::create( "blackframe" ) );
-	addParam( ParamBool::create( "reversephase" ) );
-	setFragmentShader( fshader );
+	AddHueColorParam( "color" );
+	AddParam( dutyCycle = Param::Create( "dutyCycle", .5f ) );
+	AddParam( speed = ParamRange::Create( "speed", .5, { 1, 64 } ) );
+	AddParam( ParamBool::Create( "blackframe" ) );
+	AddParam( ParamBool::Create( "reversephase" ) );
+	SetFragmentShader( fshader );
 }
 
-void StroboBeat::update()
+void StroboBeat::Update()
 {
-	unsigned long v = (unsigned long)speed->getRealValue();
+	unsigned long v = (unsigned long)speed->GetValue();
 	// get upper powe of two
 	v--;
 	v |= v >> 1;

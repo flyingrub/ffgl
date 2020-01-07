@@ -1,6 +1,6 @@
 #include "BGR.h"
 
-static PluginInstance p = Effect::createPlugin< BGR >( {
+static PluginInstance p = Effect::CreatePlugin< BGR >( {
 	"FL14",            // plugin unique ID
 	"BGR"// Plugin name
 } );
@@ -16,7 +16,7 @@ void main()
 
 BGR::BGR()
 {
-	setFragmentShader( fshader );
+	SetFragmentShader( fshader );
 }
 
 BGR::~BGR()

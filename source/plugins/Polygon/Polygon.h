@@ -1,10 +1,11 @@
 #pragma once
 #include <FFGLSDK.h>
+using namespace ffglqs;
 class PolygonRepeat : public Source
 {
 public:
 	PolygonRepeat();
-	void update() override;
+	void Update() override;
 	~PolygonRepeat();
 
 private:

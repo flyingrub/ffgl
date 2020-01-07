@@ -1,16 +1,14 @@
 #pragma once
 #include <FFGLSDK.h>
+using namespace ffglqs;
 class Wobble : public Effect
 {
 public:
 	Wobble();
 	~Wobble();
-	void update() override;
+	void Update() override;
 
 private:
-	ParamRange::Ptr speed;
-	ParamRange::Ptr size;
-	ParamRange::Ptr strengh;
-	ParamOption::Ptr mode;
+	std::shared_ptr<ParamRange> speed;
 	float relativeTime=0.0f;
 };

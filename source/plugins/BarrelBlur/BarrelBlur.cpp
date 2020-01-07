@@ -1,6 +1,6 @@
 #include "BarrelBlur.h"
 
-static PluginInstance p = Effect::createPlugin< BarrelBlur >( {
+static PluginInstance p = Effect::CreatePlugin< BarrelBlur >( {
 	"FL08",      // plugin unique ID
 	"Barrel Blur"// Plugin name
 } );
@@ -89,11 +89,11 @@ void main()
 
 BarrelBlur::BarrelBlur()
 {
-	include( { shader::snippet_id::map, shader::snippet_id::random } );
-	setFragmentShader( fshader );
-	addParam( ParamRange::create( "barrelAmount", 0.5f, { 0.0, 2.0 } ) );
-	addParam( ParamRange::create( "zoomAmount", 0.5f, { 0.0, 1.0 } ) );
-	addParam( ParamBool::create( "conrady" ) );
+	Include( { shader::snippet_id::map, shader::snippet_id::random } );
+	SetFragmentShader( fshader );
+	AddParam( ParamRange::Create( "barrelAmount", 0.5f, { 0.0, 2.0 } ) );
+	AddParam( ParamRange::Create( "zoomAmount", 0.5f, { 0.0, 1.0 } ) );
+	AddParam( ParamBool::Create( "conrady" ) );
 }
 
 BarrelBlur::~BarrelBlur()

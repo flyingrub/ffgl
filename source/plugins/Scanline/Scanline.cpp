@@ -1,6 +1,6 @@
 #include "Scanline.h"
 
-static PluginInstance p = Effect::createPlugin< Scanline >( {
+static PluginInstance p = Effect::CreatePlugin< Scanline >( {
 	"FL06",   // plugin unique ID
 	"Scanline"// Plugin name
 } );
@@ -32,12 +32,12 @@ void main()
 
 Scanline::Scanline()
 {
-	include( shader::snippet_id::random );
-	setFragmentShader( fshader );
-	addParam( ParamRange::create( "density", 0.5f, { 0.0f, 2.0f } ) );
-	addParam( ParamRange::create( "opacityScanline", 0.4f, { 0.0f, 2.0f } ) );
-	addParam( ParamRange::create( "opacityNoise", 0.6f, { 0.0f, 4.0f } ) );
-	addParam( ParamRange::create( "flickering", 0.3f, { 0.0f, 0.1f } ) );
+	Include( shader::snippet_id::random );
+	SetFragmentShader( fshader );
+	AddParam( ParamRange::Create( "density", 0.5f, { 0.0f, 2.0f } ) );
+	AddParam( ParamRange::Create( "opacityScanline", 0.4f, { 0.0f, 2.0f } ) );
+	AddParam( ParamRange::Create( "opacityNoise", 0.6f, { 0.0f, 4.0f } ) );
+	AddParam( ParamRange::Create( "flickering", 0.3f, { 0.0f, 0.1f } ) );
 }
 Scanline::~Scanline()
 {

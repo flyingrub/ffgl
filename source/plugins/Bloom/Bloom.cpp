@@ -3,7 +3,7 @@
 
 using namespace ffglex;
 
-static PluginInstance p = Effect::createPlugin< Bloom >( {
+static PluginInstance p = Effect::CreatePlugin< Bloom >( {
 	"FL13",// plugin unique ID
 	"Bloom"// Plugin name
 } );
@@ -194,15 +194,15 @@ void main()
 
 Bloom::Bloom()
 {
-	setFragmentShader( thresholdShader );
-	addParam( threshold = ParamRange::create( "threshold", 0.8f, { 0, 1 } ) );
-	addParam( radius = ParamRange::create( "radius", 2.5f, { 1, 7 } ) );
-	addParam( intensity = ParamRange::create( "intensity", 0.8f, { 0, 1 } ) );
-	addParam( hq = ParamBool::create( "hq" ) );
-	addParam( antiFlicker = ParamBool::create( "antiFlicker" ) );
+	SetFragmentShader( thresholdShader );
+	AddParam( threshold = ParamRange::Create( "threshold", 0.8f, { 0, 1 } ) );
+	AddParam( radius = ParamRange::Create( "radius", 2.5f, { 1, 7 } ) );
+	AddParam( intensity = ParamRange::Create( "intensity", 0.8f, { 0, 1 } ) );
+	AddParam( hq = ParamBool::Create( "hq" ) );
+	AddParam( antiFlicker = ParamBool::Create( "antiFlicker" ) );
 }
 
-FFResult Bloom::init()
+FFResult Bloom::Init()
 {
 	if( !downSampleFilter.Compile( vertexShaderCode, downsampleFilterShader ) )
 	{
@@ -222,14 +222,14 @@ FFResult Bloom::init()
 	return FF_SUCCESS;
 }
 
-FFResult Bloom::render( ProcessOpenGLStruct* inputTextures )
+FFResult Bloom::Render( ProcessOpenGLStruct* inputTextures )
 {
 	static const int kMaxIterations = 16;
 
 	// determine the iteration count
-	double logh        = std::log( currentViewport.height ) / std::log( 2 ) + radius->getRealValue() - 8;
+	double logh        = std::log( currentViewport.height ) / std::log( 2 ) + radius->GetValue() - 8;
 	int logh_i        = (int)logh;
-	int iterations     = (int)utils::clamp( (float)logh_i, 1.0f, (float)kMaxIterations );
+	int iterations     = (int)ffglex::clamp( (float)logh_i, 1.0f, (float)kMaxIterations );
 	double sampleScale = 0.5f + logh - logh_i;
 
 	FFGLFBO thresholdFBO;
@@ -237,56 +237,66 @@ FFResult Bloom::render( ProcessOpenGLStruct* inputTextures )
 	FFGLFBO combine[ kMaxIterations ];
 
 	// Prefilter pixel above a certain brightness threshold
-	thresholdFBO.Create( currentViewport.width, currentViewport.height, GL_RGBA16F );
-	thresholdFBO.BindAsRenderTarget();
+	thresholdFBO.Initialise( currentViewport.width, currentViewport.height, GL_RGBA16F );
+	glBindFramebuffer( GL_FRAMEBUFFER, thresholdFBO.GetGLID() );
 	FFGLFBO* last = &thresholdFBO;
-	shader.Use();
+	glUseProgram( shader.GetGLID() );
 	shader.Set( "texelSize", 1.0f / (float)last->GetWidth(), 1.0f / (float)last->GetHeight() );
-	FFResult result = Effect::render( inputTextures );
+	FFResult result = Effect::Render( inputTextures );
 	if( result == FF_FAIL )
 		return FF_FAIL;
 
 	// Create a mipmap pyramid
-	downSampleFilter.Use();
+	glUseProgram( downSampleFilter.GetGLID() );
 	downSampleFilter.Set( "maxUV", 1.f, 1.f );
-	downSampleFilter.Set( "antiFlicker", (int)antiFlicker->getValue() );
+	downSampleFilter.Set( "antiFlicker", (int)antiFlicker->GetValue() );
 	for( int i = 0; i < iterations; i++ )
 	{
-		mipmaps[ i ].Create( last->GetWidth() / 2, last->GetHeight() / 2, GL_RGBA16F );
-		mipmaps[ i ].BindAsRenderTarget();
+		mipmaps[ i ].Initialise( last->GetWidth() / 2, last->GetHeight() / 2, GL_RGBA16F );
+		glBindFramebuffer( GL_FRAMEBUFFER, mipmaps[ i ].GetGLID() );
 		mipmaps[ i ].ResizeViewPort();
 		downSampleFilter.Set( "texelSize", 1.0f / (float)last->GetWidth(), 1.0f / (float)last->GetHeight() );
-		downSampleFilter.Bind( "inputTexture", 0, last->GetTextureInfo() );
+		downSampleFilter.Set( "inputTexture", 0 );
+		glActiveTexture( GL_TEXTURE0 );
+		glBindTexture( GL_TEXTURE_2D, last->GetTextureInfo().Handle );
 		quad.Draw();
 		last = &mipmaps[ i ];
 	}
 
 	// upsample and combine loop
-	upSampleFilter.Use();
+	glUseProgram( upSampleFilter.GetGLID() );
 	upSampleFilter.Set( "maxUV", 1.f, 1.f );
-	upSampleFilter.Set( "hq", (int)hq->getValue() );
+	upSampleFilter.Set( "hq", (int) hq->GetValue() );
 	for( int i = iterations - 2; i >= 0; i-- )
 	{
-		combine[ i ].Create( mipmaps[ i ].GetWidth(), mipmaps[ i ].GetHeight(), GL_RGBA16F );
-		combine[ i ].BindAsRenderTarget();
+		combine[ i ].Initialise( mipmaps[ i ].GetWidth(), mipmaps[ i ].GetHeight(), GL_RGBA16F );
+		glBindFramebuffer( GL_FRAMEBUFFER, combine[ i ].GetGLID() );
 		combine[ i ].ResizeViewPort();
 		upSampleFilter.Set( "texelSize", 1.0f / (float)last->GetWidth(), 1.0f / (float)last->GetHeight() );
 		upSampleFilter.Set( "sampleScale", (float)sampleScale );
-		upSampleFilter.Bind( "inputTexture", 0, last->GetTextureInfo() );
-		upSampleFilter.Bind( "baseTexture", 1, mipmaps[ i ].GetTextureInfo() );
+		downSampleFilter.Set( "inputTexture", 0 );
+		glActiveTexture( GL_TEXTURE0 );
+		glBindTexture( GL_TEXTURE_2D, last->GetTextureInfo().Handle );
+		downSampleFilter.Set( "baseTexture", 1 );
+		glActiveTexture( GL_TEXTURE0 + 1);
+		glBindTexture( GL_TEXTURE_2D, mipmaps->GetTextureInfo().Handle );
 		quad.Draw();
 		last = &combine[ i ];
 	}
 
 	glBindFramebuffer( GL_FRAMEBUFFER, inputTextures->HostFBO );
 	glViewport( 0, 0, currentViewport.width, currentViewport.height );
-	final.Use();
-	final.Set( "hq", (int)hq->getValue() );
+	glUseProgram( final.GetGLID() );
+	final.Set( "hq", (int)hq->GetValue() );
 	FFGLTexCoords maxCoords = GetMaxGLTexCoords( *inputTextures->inputTextures[ 0 ] );
 	final.Set( "maxUV", maxCoords.s, maxCoords.t );
-	final.Bind( "inputTexture", 0, last->GetTextureInfo() );
-	final.Bind( "baseTexture", 1, *inputTextures->inputTextures[ 0 ] );
-	final.Set( "intensity", intensity->getRealValue() );
+	downSampleFilter.Set( "inputTexture", 0 );
+	glActiveTexture( GL_TEXTURE0 );
+	glBindTexture( GL_TEXTURE_2D, last->GetTextureInfo().Handle );
+	downSampleFilter.Set( "baseTexture", 1 );
+	glActiveTexture( GL_TEXTURE0 + 1 );
+	glBindTexture( GL_TEXTURE_2D, inputTextures->inputTextures[ 0 ]->Handle );
+	final.Set( "intensity", intensity->GetValue() );
 	final.Set( "texelSize", 1.0f / (float)last->GetWidth(), 1.0f / (float)last->GetHeight() );
 	final.Set( "sampleScale", (float)sampleScale );
 	quad.Draw();
@@ -294,14 +304,20 @@ FFResult Bloom::render( ProcessOpenGLStruct* inputTextures )
 	// Free all allocated ressource
 	for( int i = 0; i < iterations; i++ )
 	{
-		mipmaps[ i ].FreeResources();
-		combine[ i ].FreeResources();
+		mipmaps[ i ].Release();
+		combine[ i ].Release();
 	}
-	thresholdFBO.FreeResources();
+	thresholdFBO.Release();
+
+	glBindVertexArray( 0 );
+	glBindTexture( GL_TEXTURE_2D, 0 );
+	glActiveTexture( GL_TEXTURE0 );
+	glUseProgram( 0 );
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 	return FF_SUCCESS;
 }
 
-void Bloom::clean()
+void Bloom::Clean()
 {
 	downSampleFilter.FreeGLResources();
 	upSampleFilter.FreeGLResources();

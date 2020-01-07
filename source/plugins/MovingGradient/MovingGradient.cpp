@@ -1,6 +1,6 @@
 #include "MovingGradient.h"
 
-static PluginInstance p = Source::createPlugin< MovingGradient >( {
+static PluginInstance p = Source::CreatePlugin< MovingGradient >( {
 	"FL07",          // plugin unique ID
 	"Moving Gradient"// Plugin name
 } );
@@ -23,8 +23,8 @@ void main()
 
 MovingGradient::MovingGradient()
 {
-	setFragmentShader( fshader );
-	addParam( ParamRange::create( "amount", 0.5f, { 0., 0.5 } ) );
+	SetFragmentShader( fshader );
+	AddParam( ParamRange::Create( "amount", 0.5f, { 0., 0.5 } ) );
 }
 
 MovingGradient::~MovingGradient()

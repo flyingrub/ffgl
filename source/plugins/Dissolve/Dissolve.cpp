@@ -1,6 +1,6 @@
 #include "Dissolve.h"
 
-static PluginInstance p = Effect::createPlugin< Dissolve >( {
+static PluginInstance p = Effect::CreatePlugin< Dissolve >( {
 	"FL09",   // plugin unique ID
 	"Dissolve"// Plugin name
 } );
@@ -41,19 +41,19 @@ void main()
 
 Dissolve::Dissolve()
 {
-	include( shader::snippet_id::simplex );
-	addParam( ParamRange::create( "zoom", 0.5f, { 0.0f, 2.0f } ) );
-	addParam( ParamRange::create( "speed", 0.5f, { 0.0f, 0.2f } ) );
-	addParam( ParamRange::create( "amount", 0.5f, { 0.0f, 1.0f } ) );
-	addParam( ParamRange::create( "spaced", 0.5f, { 0.0f, .01f } ) );
-	addParam( ParamRange::create( "smoothness", 0.5f, { 0.0f, 1.0f } ) );
-	setFragmentShader( fshader );
+	Include( shader::snippet_id::simplex );
+	AddParam( ParamRange::Create( "zoom", 0.5f, { 0.0f, 2.0f } ) );
+	AddParam( ParamRange::Create( "speed", 0.5f, { 0.0f, 0.2f } ) );
+	AddParam( ParamRange::Create( "amount", 0.5f, { 0.0f, 1.0f } ) );
+	AddParam( ParamRange::Create( "spaced", 0.5f, { 0.0f, .01f } ) );
+	AddParam( ParamRange::Create( "smoothness", 0.5f, { 0.0f, 1.0f } ) );
+	SetFragmentShader( fshader );
 }
 
-void Dissolve::update()
+void Dissolve::Update()
 {
-	auto speedParam = std::dynamic_pointer_cast< ParamRange >( getParam( "speed" ) );
-	float speed     = speedParam->getRealValue();
+	auto speedParam = std::dynamic_pointer_cast< ParamRange >( GetParam( "speed" ) );
+	float speed     = speedParam->GetValue();
 	relativeTime += deltaTime * speed;
 	shader.Set( "relativeTime", relativeTime );
 }
